@@ -36,12 +36,10 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static java.lang.Math.abs;
 
-
-@TeleOp(name="6043 - Teleop 2019", group="Iterative Opmode")
+@TeleOp(name="7911 - Teleop 2019", group="Iterative Opmode")
 //@Disabled
-public class Teleop2019 extends OpMode
+public class Teleop2019_7911 extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -103,8 +101,8 @@ public class Teleop2019 extends OpMode
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
         elev.setDirection(DcMotor.Direction.REVERSE);
         arm.setDirection(DcMotor.Direction.REVERSE);
         elev.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -167,7 +165,6 @@ public class Teleop2019 extends OpMode
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
-
         armPower = -gamepad2.right_stick_x * 0.3;
 
         lowerLimitPressed = !lowerLimit.getState();

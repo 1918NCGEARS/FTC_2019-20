@@ -40,7 +40,6 @@ import static org.firstinspires.ftc.teamcode.AutonFunctions.delay;
 import static org.firstinspires.ftc.teamcode.AutonFunctions.drive;
 import static org.firstinspires.ftc.teamcode.AutonFunctions.index;
 import static org.firstinspires.ftc.teamcode.AutonFunctions.sendTelemetry;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.toggleLatch;
 import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.Pos;
 import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.findSkystone;
 import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.getSkystonePos;
@@ -183,13 +182,13 @@ public class RedRightToFoundation extends OpMode
                 drive(4,4,0.3);
                 break;
             case 22:
-                toggleLatch();
+//                toggleLatch();
                 break;
             case 23:
                 drive(-32.75,-32.75,0.3);
                 break;
             case 24:
-                toggleLatch();
+//                toggleLatch();
                 break;
             case 25:
                 drive(0,22,0.3);

@@ -33,18 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.AutonFunctions.allStop;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.delay;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.drive;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.index;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.initRobot;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.sendTelemetry;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.toggleLatch;
-import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.Pos;
-import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.findSkystone;
-import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.getSkystonePos;
-import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.initVuforia;
-import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.targetsSkyStone;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.*;
 
 
 /**
@@ -61,7 +50,7 @@ import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.targetsSkyStone;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="To Line", group="Iterative Opmode")
+@Autonomous(name="6043 - To Line", group="Iterative Opmode")
 //@Disabled
 public class ToLine extends OpMode
 {

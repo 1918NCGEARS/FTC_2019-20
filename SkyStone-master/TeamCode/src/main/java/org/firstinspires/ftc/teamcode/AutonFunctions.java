@@ -4,8 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 
 public class AutonFunctions {
     // System Variables
@@ -20,11 +22,13 @@ public class AutonFunctions {
     static double rightDrivePower = 0;
     static double leftTotalDist = 0;
     static double rightTotalDist = 0;
-    static final double DRIVE_ENC_ERR_RANGE = 50;
+    static final double DRIVE_ENC_ERR_RANGE = 100;
     static final double DRIVE_COUNTS_PER_MOTOR_REV = 1120;  // Per Rev Documentation, 1120 counts per output shaft revolution
+    static final double DRIVE_COUNTS_PER_MOTOR_REV_20to1 = 560;  // Per Rev Documentation, 1120 counts per output shaft revolution
     static final double DRIVE_GEAR_REDUCTION = 1;
     static final double WHEEL_DIAMETER_INCHES = 3.5;
     static final double DRIVE_COUNTS_PER_INCH = (DRIVE_COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
+    static final double DRIVE_COUNTS_PER_INCH_20to1 = (DRIVE_COUNTS_PER_MOTOR_REV_20to1 * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
     // Elev Variables
     private static DcMotor elev = null;
@@ -36,9 +40,27 @@ public class AutonFunctions {
     private static DcMotor arm = null;
     static double armPower = 0;
 
-    // Limit switch Variabless
+    // Limit switch Variables
     private static DigitalChannel lowerLimit = null;
     private static DigitalChannel upperLimit = null;
+
+    // Set up hook servo variables
+    public static Servo hook = null;
+    static final int HOOK_MAX_POS_DEG    =  180;   // Maximum rotational position
+    static final int HOOK_MIN_POS_DEG    =  0;     // Minimum rotational position
+    static final double HOOK_MAX_POS     =  1.0;   // Maximum rotational position
+    static final double HOOK_MIN_POS     =  0.0;   // Minimum rotational position
+    static final int HOOK_UP             = 180;    // Hook Up position in degrees
+    static final int HOOK_DOWN           = 85;     // Hook down position in degrees
+
+    // Set up claw servo variables
+    private static Servo claw = null;
+    static final int CLAW_MAX_POS_DEG    =  180;   // Maximum rotational position
+    static final int CLAW_MIN_POS_DEG    =  0;     // Minimum rotational position
+    static final double CLAW_MAX_POS     =  1.0;   // Maximum rotational position
+    static final double CLAW_MIN_POS     =  0.0;   // Minimum rotational position
+    static final int CLAW_OPEN           = 170;    // Claw Open position in degrees
+    static final int CLAW_CLOSED         = 5;     // Claw Closed position in degrees
 
     // Index
     public static int index = 0;
@@ -60,14 +82,11 @@ public class AutonFunctions {
         rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set elevator parameters
         elev = hwMap.get(DcMotor.class, "elev");
         elev.setDirection(DcMotor.Direction.FORWARD);
         elev.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        elev.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         elev.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set arm parameters
@@ -81,6 +100,12 @@ public class AutonFunctions {
         lowerLimit.setMode(DigitalChannel.Mode.INPUT);
         upperLimit.setMode(DigitalChannel.Mode.INPUT);
 
+        // Set hook parameters
+        hook = hwMap.get(Servo.class,"hook");
+
+        // Set claw parameters
+        claw = hwMap.get(Servo.class,"claw");
+
         index = 0;
         leftTotalDist = 0;
         rightTotalDist = 0;
@@ -88,8 +113,7 @@ public class AutonFunctions {
 
     }
 
-    public static void drive(double leftDistInInch, double rightDistInInch, double motorPwr) {
-//        telemetry.addData("Hello", "world");
+    public static void drive(double leftDistInInch, double rightDistInInch, double leftMotorPwr, double rightMotorPwr) {
         int leftDriveEncCount;
         int rightDriveEncCount;
         boolean leftDriveFinished = false;
@@ -111,7 +135,7 @@ public class AutonFunctions {
         }
         else{
             leftDrive.setTargetPosition(leftDriveEncCount);
-            leftDrivePower = motorPwr;
+            leftDrivePower = leftMotorPwr;
         }
 
         if ((rightDrive.getCurrentPosition() >= rightDriveEncCount - DRIVE_ENC_ERR_RANGE) &&
@@ -121,20 +145,76 @@ public class AutonFunctions {
         }
         else{
             rightDrive.setTargetPosition(rightDriveEncCount);
-            rightDrivePower = motorPwr;
+            rightDrivePower = rightMotorPwr;
         }
 
         if (leftDriveFinished && rightDriveFinished) {
             isNew = true;
             index++;
         }
+
         leftDrive.setPower(leftDrivePower);
         rightDrive.setPower(rightDrivePower);
-
         leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
     }
 
+    public static void drive(double leftDistInInch, double rightDistInInch, double motorPwr){
+        drive(leftDistInInch, rightDistInInch, motorPwr, motorPwr);
+    }
+
+    public static void drive20to1(double leftDistInInch, double rightDistInInch, double leftMotorPwr, double rightMotorPwr) {
+        int leftDriveEncCount;
+        int rightDriveEncCount;
+        boolean leftDriveFinished = false;
+        boolean rightDriveFinished = false;
+
+        if (isNew) {
+            leftTotalDist -= leftDistInInch;
+            rightTotalDist -= rightDistInInch;
+            isNew = false;
+        }
+
+        leftDriveEncCount = (int) Math.round(leftTotalDist * DRIVE_COUNTS_PER_INCH_20to1);
+        rightDriveEncCount = (int) Math.round(rightTotalDist * DRIVE_COUNTS_PER_INCH_20to1);
+        telemetry.addData("left enc", "(%d)", leftDriveEncCount);
+        telemetry.addData("right enc", "(%d)", rightDriveEncCount);
+        if ((leftDrive.getCurrentPosition() >= leftDriveEncCount - DRIVE_ENC_ERR_RANGE) &&
+                (leftDrive.getCurrentPosition() <= leftDriveEncCount + DRIVE_ENC_ERR_RANGE)) {
+            leftDrivePower = 0;
+            leftDriveFinished = true;
+        }
+        else{
+            leftDrive.setTargetPosition(leftDriveEncCount);
+            leftDrivePower = leftMotorPwr * 0.7;
+        }
+
+        if ((rightDrive.getCurrentPosition() >= rightDriveEncCount - DRIVE_ENC_ERR_RANGE) &&
+                (rightDrive.getCurrentPosition() <= rightDriveEncCount + DRIVE_ENC_ERR_RANGE)) {
+            rightDrivePower = 0;
+            rightDriveFinished = true;
+        }
+        else{
+            rightDrive.setTargetPosition(rightDriveEncCount);
+            rightDrivePower = rightMotorPwr * 0.7;
+        }
+
+        if (leftDriveFinished && rightDriveFinished) {
+            isNew = true;
+            index++;
+        }
+
+        leftDrive.setPower(leftDrivePower);
+        rightDrive.setPower(rightDrivePower);
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+    }
+
+    public static void drive20to1(double leftDistInInch, double rightDistInInch, double motorPwr){
+        drive20to1(leftDistInInch, rightDistInInch, motorPwr, motorPwr);
+    }
     public static void elev(int elevTarget){
         boolean lowerLimitPressed = !lowerLimit.getState();
         boolean upperLimitPressed = !upperLimit.getState();
@@ -190,8 +270,32 @@ public class AutonFunctions {
         telemetry.addData("State", index);
     }
 
-    public static void toggleLatch() {
-        // Code to toggle Foundation grabber
+    public static double map(int input, int inMin, int inMax, double outMin, double outMax) {
+        double output = (input - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        return output;
     }
 
+    public static void hookUp() {
+        double hookPos = map(HOOK_UP,HOOK_MIN_POS_DEG,HOOK_MAX_POS_DEG,HOOK_MIN_POS,HOOK_MAX_POS);
+        hook.setPosition(hookPos);
+        index++;
+    }
+
+    public static void hookDown() {
+        double hookPos = map(HOOK_DOWN,HOOK_MIN_POS_DEG,HOOK_MAX_POS_DEG,HOOK_MIN_POS,HOOK_MAX_POS);
+        hook.setPosition(hookPos);
+        index++;
+    }
+
+    public static void clawOpen() {
+        double clawPos = map(CLAW_OPEN,CLAW_MIN_POS_DEG,CLAW_MAX_POS_DEG,CLAW_MIN_POS,CLAW_MAX_POS);
+        claw.setPosition(clawPos);
+        index++;
+    }
+
+    public static void clawClose() {
+        double clawPos = map(CLAW_CLOSED,CLAW_MIN_POS_DEG,CLAW_MAX_POS_DEG,CLAW_MIN_POS,CLAW_MAX_POS);
+        claw.setPosition(clawPos);
+        index++;
+    }
 }

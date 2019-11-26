@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,12 +37,10 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static java.lang.Math.abs;
 
-
-@TeleOp(name="6043 - Teleop 2019", group="Iterative Opmode")
-//@Disabled
-public class Teleop2019 extends OpMode
+@TeleOp(name="Teleop 2019 Drive Test", group="Iterative Opmode")
+@Disabled
+public class Teleop2019DriveTest extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -156,17 +155,14 @@ public class Teleop2019 extends OpMode
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftDrivePower;
         double rightDrivePower;
-        double driveMultiplier;
-        double slowMultiplier;
-        double fastMultiplier;
-        double BASE_DRIVE_SPEED = 0.5;
+        double leftStickPower  = -gamepad1.left_stick_y * 0.5;
+        double rightStickPower = -gamepad1.right_stick_y * 0.5;
+        double slowDrivePower;
+        double fastDrivePower;
         double elevPower;
         double armPower;
         boolean lowerLimitPressed;
         boolean upperLimitPressed;
-
-        // Tank Mode uses one stick to control each wheel.
-        // - This requires no math, but it is hard to drive forward slowly and keep straight.
 
         armPower = -gamepad2.right_stick_x * 0.3;
 
@@ -195,20 +191,25 @@ public class Teleop2019 extends OpMode
         }
 
         if (gamepad1.left_trigger > 0){
-            slowMultiplier = 0.15;
+            slowDrivePower = 0.15;
+        }
+        else if (gamepad1.left_bumper){
+            slowDrivePower = -0.15;
         }
         else
-            slowMultiplier = 0;
+            slowDrivePower = 0;
 
         if (gamepad1.right_trigger > 0){
-            fastMultiplier = 0.35;
+            fastDrivePower = 0.35;
+        }
+        else if (gamepad1.right_bumper){
+            fastDrivePower = -0.35;
         }
         else
-            fastMultiplier = 0;
+            fastDrivePower = 0;
 
-        driveMultiplier = BASE_DRIVE_SPEED + slowMultiplier + fastMultiplier;
-        leftDrivePower  = -gamepad1.left_stick_y * driveMultiplier;
-        rightDrivePower = -gamepad1.right_stick_y * driveMultiplier;
+        leftDrivePower = leftStickPower + slowDrivePower + fastDrivePower;
+        rightDrivePower = rightStickPower + slowDrivePower + fastDrivePower;
 
         // Send power to actuators
         leftDrive.setPower(leftDrivePower);

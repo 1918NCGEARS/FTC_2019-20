@@ -30,13 +30,18 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.AutonFunctions.*;
-import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.*;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.allStop;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.clawOpen;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.delay;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.drive;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.hookDown;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.hookUp;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.index;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.initRobot;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.sendTelemetry;
 
 
 /**
@@ -53,12 +58,14 @@ import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.*;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Blue Left To Foundation", group="Iterative Opmode")
-@Disabled
-public class BlueLeftToFoundation extends OpMode
+@Autonomous(name="6043 - Red Foundation To Line", group="Iterative Opmode")
+//@Disabled
+public class RedFoundationToLine extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+
+//    private static Servo hook = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -69,9 +76,8 @@ public class BlueLeftToFoundation extends OpMode
         telemetry.setMsTransmissionInterval(0);   // Default is 250
         telemetry.update();
         initRobot(hardwareMap, telemetry);
-        initVuforia(hardwareMap, telemetry);
         telemetry.addData("Status", "Initialized");
-        telemetry.setMsTransmissionInterval(250);
+        telemetry.setMsTransmissionInterval(100);
     }
 
     /*
@@ -79,6 +85,8 @@ public class BlueLeftToFoundation extends OpMode
      */
     @Override
     public void init_loop() {
+        hookUp();
+        clawOpen();
     }
 
     /*
@@ -87,6 +95,7 @@ public class BlueLeftToFoundation extends OpMode
     @Override
     public void start() {
         runtime.reset();
+        index = 0;
     }
 
     /*
@@ -94,96 +103,33 @@ public class BlueLeftToFoundation extends OpMode
      */
     @Override
     public void loop() {
-
         switch(index) {
             case 0:
-                drive(14,14,0.3);
+                drive(34,34,0.6);
                 break;
             case 1:
-                delay(1000);
+                hookDown();
                 break;
             case 2:
-                findSkystone();
-                if (getSkystonePos() == Pos.LEFT) {
-                    index++;
-                }
-                else if (getSkystonePos() == Pos.RIGHT) {
-                    index = 9;
-                }
-                else {
-                    index = 15;
-                }
+                delay(500);
                 break;
-            case 3:    // Cases 3 - 8 are the LEFT path
-                drive(0,5.5,0.3);
+            case 3:
+                drive(-26,-40,0.6,1);
                 break;
             case 4:
-                drive(20,20,0.3);
+                hookUp();
                 break;
             case 5:
-                // pick up block
+                delay(500);
                 break;
             case 6:
-                drive(-4,-4,0.3);
+                drive(-5, -5,0.6);
                 break;
             case 7:
-                drive(0,16.5,0.3);
+                drive(0, 22, 0.8);
                 break;
             case 8:
-                drive(76.3,76.3,0.3);
-                index = 20;
-                break;
-            case 9:    // Cases 9 - 14 are the RIGHT path
-                drive(5.5,0,0.3);
-                break;
-            case 10:
-                drive(20,20,0.3);
-                break;
-            case 11:
-                // pick up block
-                break;
-            case 12:
-                drive(-4,-4,0.3);
-                break;
-            case 13:
-                drive(27.5,0,0.3);
-                break;
-            case 14:
-                drive(84.3,84.3,0.3);
-                index = 20;
-                break;
-            case 15:    // Cases 15 - 19 are the MIDDLE path
-                drive(18,18,0.3);
-                break;
-            case 16:
-                // pick up block
-                break;
-            case 17:
-                drive(-4,-4,.3);
-                break;
-            case 18:
-                drive(0,22,0.3);
-                break;
-            case 19:
-                drive(80.3,80.3,0.5);
-                break;
-            case 20:
-                drive(22,0,0.3);
-                break;
-            case 21:
-                drive(4,4,0.3);
-                break;
-            case 22:
-//                toggleLatch();
-                break;
-            case 23:
-                drive(-32.75,-32.75,0.3);
-                break;
-            case 24:
-//                toggleLatch();
-                break;
-            case 25:
-                drive(22,0,0.3);
+                drive(30, 30, 0.8, 0.8);
                 break;
             default:
                 allStop();
@@ -196,8 +142,6 @@ public class BlueLeftToFoundation extends OpMode
      */
     @Override
     public void stop() {
-        // Disable Tracking when we are done;
-        targetsSkyStone.deactivate();        // Move to function after testing
     }
 
 }

@@ -39,7 +39,6 @@ import static org.firstinspires.ftc.teamcode.AutonFunctions.drive;
 import static org.firstinspires.ftc.teamcode.AutonFunctions.index;
 import static org.firstinspires.ftc.teamcode.AutonFunctions.initRobot;
 import static org.firstinspires.ftc.teamcode.AutonFunctions.sendTelemetry;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.toggleLatch;
 import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.Pos;
 import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.findSkystone;
 import static org.firstinspires.ftc.teamcode.VuforiaSkyStone.getSkystonePos;
