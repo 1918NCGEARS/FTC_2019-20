@@ -33,15 +33,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.AutonFunctions.allStop;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.clawOpen;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.delay;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.drive;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.hookDown;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.hookUp;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.index;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.initRobot;
-import static org.firstinspires.ftc.teamcode.AutonFunctions.sendTelemetry;
+import static org.firstinspires.ftc.teamcode.AutonFunctions.*;
+
 
 
 /**
@@ -58,9 +51,9 @@ import static org.firstinspires.ftc.teamcode.AutonFunctions.sendTelemetry;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="6043 - Red Foundation To Line", group="Iterative Opmode")
+@Autonomous(name="7911t - Blue Foundation To Line", group="Iterative Opmode")
 //@Disabled
-public class RedFoundationToLine extends OpMode
+public class BlueFoundationToLine_7911_test extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -105,7 +98,7 @@ public class RedFoundationToLine extends OpMode
     public void loop() {
         switch(index) {
             case 0:
-                drive(34,34,0.6);
+                drive20to1(34,34,0.8);
                 break;
             case 1:
                 hookDown();
@@ -114,7 +107,8 @@ public class RedFoundationToLine extends OpMode
                 delay(500);
                 break;
             case 3:
-                drive(-26,-40,0.6,1);
+                drive20to1(-40,-28,1.5,0.8);
+                delay(10000);
                 break;
             case 4:
                 hookUp();
@@ -122,14 +116,15 @@ public class RedFoundationToLine extends OpMode
             case 5:
                 delay(500);
                 break;
+//            case 6:
+//                drive20to1(-5, -5,1);
+//                break;
             case 6:
-                drive(-5, -5,0.6);
+                drive20to1(28, -8, 1);
+                delay(8000);
                 break;
             case 7:
-                drive(0, 30, 0.8);
-                break;
-            case 8:
-                drive(30, 30, 0.8, 0.8);
+                drive20to1(30, 30, 0.9, 0.8);
                 break;
             default:
                 allStop();

@@ -155,8 +155,8 @@ public class Teleop2019DriveTest extends OpMode
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftDrivePower;
         double rightDrivePower;
-        double leftStickPower  = -gamepad1.left_stick_y * 0.5;
-        double rightStickPower = -gamepad1.right_stick_y * 0.5;
+        double leftStickPower  = -gamepad1.left_stick_y;
+        double rightStickPower = -gamepad1.right_stick_y;
         double slowDrivePower;
         double fastDrivePower;
         double elevPower;
@@ -192,21 +192,30 @@ public class Teleop2019DriveTest extends OpMode
 
         if (gamepad1.left_trigger > 0){
             slowDrivePower = 0.15;
+            rightStickPower = rightStickPower * 0.5;
+            leftStickPower = leftStickPower * 0.5;
         }
         else if (gamepad1.left_bumper){
             slowDrivePower = -0.15;
+            rightStickPower = rightStickPower * -0.5;
+            leftStickPower = leftStickPower * -0.5;
         }
         else
             slowDrivePower = 0;
 
         if (gamepad1.right_trigger > 0){
             fastDrivePower = 0.35;
+            rightStickPower = rightStickPower * 0.5;
+            leftStickPower = leftStickPower * 0.5;
         }
         else if (gamepad1.right_bumper){
             fastDrivePower = -0.35;
+            rightStickPower = rightStickPower * -0.5;
+            leftStickPower = leftStickPower * -0.5;
         }
         else
             fastDrivePower = 0;
+
 
         leftDrivePower = leftStickPower + slowDrivePower + fastDrivePower;
         rightDrivePower = rightStickPower + slowDrivePower + fastDrivePower;

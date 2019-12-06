@@ -23,6 +23,7 @@ public class AutonFunctions {
     static double leftTotalDist = 0;
     static double rightTotalDist = 0;
     static final double DRIVE_ENC_ERR_RANGE = 100;
+    static final double DRIVE_ENC_ERR_RANGE_20to1 = 50;
     static final double DRIVE_COUNTS_PER_MOTOR_REV = 1120;  // Per Rev Documentation, 1120 counts per output shaft revolution
     static final double DRIVE_COUNTS_PER_MOTOR_REV_20to1 = 560;  // Per Rev Documentation, 1120 counts per output shaft revolution
     static final double DRIVE_GEAR_REDUCTION = 1;
@@ -180,8 +181,8 @@ public class AutonFunctions {
         rightDriveEncCount = (int) Math.round(rightTotalDist * DRIVE_COUNTS_PER_INCH_20to1);
         telemetry.addData("left enc", "(%d)", leftDriveEncCount);
         telemetry.addData("right enc", "(%d)", rightDriveEncCount);
-        if ((leftDrive.getCurrentPosition() >= leftDriveEncCount - DRIVE_ENC_ERR_RANGE) &&
-                (leftDrive.getCurrentPosition() <= leftDriveEncCount + DRIVE_ENC_ERR_RANGE)) {
+        if ((leftDrive.getCurrentPosition() >= leftDriveEncCount - DRIVE_ENC_ERR_RANGE_20to1) &&
+                (leftDrive.getCurrentPosition() <= leftDriveEncCount + DRIVE_ENC_ERR_RANGE_20to1)) {
             leftDrivePower = 0;
             leftDriveFinished = true;
         }
@@ -190,8 +191,8 @@ public class AutonFunctions {
             leftDrivePower = leftMotorPwr * 0.7;
         }
 
-        if ((rightDrive.getCurrentPosition() >= rightDriveEncCount - DRIVE_ENC_ERR_RANGE) &&
-                (rightDrive.getCurrentPosition() <= rightDriveEncCount + DRIVE_ENC_ERR_RANGE)) {
+        if ((rightDrive.getCurrentPosition() >= rightDriveEncCount - DRIVE_ENC_ERR_RANGE_20to1) &&
+                (rightDrive.getCurrentPosition() <= rightDriveEncCount + DRIVE_ENC_ERR_RANGE_20to1)) {
             rightDrivePower = 0;
             rightDriveFinished = true;
         }

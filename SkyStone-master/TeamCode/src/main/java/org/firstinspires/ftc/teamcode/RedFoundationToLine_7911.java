@@ -98,15 +98,21 @@ public class RedFoundationToLine_7911 extends OpMode
         switch(index) {
             case 0:
                 drive20to1(34,34,0.6);
+                if (time >= 5) {
+                    index++;
+                }
                 break;
             case 1:
                 hookDown();
                 break;
             case 2:
-                delay(500);
+                delay(600);
                 break;
             case 3:
-                drive20to1(-26,-40,0.6,1);
+                drive20to1(-32,-42,0.6,1);
+                if (time >= 10) {
+                    index++;
+                }
                 break;
             case 4:
                 hookUp();
@@ -115,13 +121,19 @@ public class RedFoundationToLine_7911 extends OpMode
                 delay(500);
                 break;
             case 6:
-                drive20to1(-5, -5,0.6);
+                drive20to1(-5, -5,1);
+                if (time >= 16) {
+                    index++;
+                }
                 break;
             case 7:
-                drive20to1(0, 22, 0.8);
+                drive20to1(-8, 15, 1);
+                if (time > 25){
+                    index++;
+                }
                 break;
             case 8:
-                drive20to1(30, 30, 0.8, 0.8);
+                drive20to1(30, 30, 1);
                 break;
             default:
                 allStop();

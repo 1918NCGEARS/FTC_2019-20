@@ -107,7 +107,7 @@ public class BlueFoundationToLine extends OpMode
                 delay(500);
                 break;
             case 3:
-                drive(-37,-26,1,0.6);
+                drive(-40,-28,1,0.6);
                 break;
             case 4:
                 hookUp();
@@ -119,7 +119,7 @@ public class BlueFoundationToLine extends OpMode
                 drive(-5, -5,0.6);
                 break;
             case 7:
-                drive(22, 0, 0.8);
+                drive(28, 0, 0.9);
                 break;
             case 8:
                 drive(30, 30, 0.9, 0.8);

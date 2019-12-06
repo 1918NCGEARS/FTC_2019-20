@@ -98,7 +98,7 @@ public class BlueFoundationToLine_7911 extends OpMode
     public void loop() {
         switch(index) {
             case 0:
-                drive20to1(34,34,0.6);
+                drive20to1(34,34,0.8);
                 break;
             case 1:
                 hookDown();
@@ -107,7 +107,11 @@ public class BlueFoundationToLine_7911 extends OpMode
                 delay(500);
                 break;
             case 3:
-                drive20to1(-40,-26,1,0.6);
+                drive20to1(-42,-28,1);
+//                if (time >= 10) {
+//                    index++;
+//                }
+                delay(10000);
                 break;
             case 4:
                 hookUp();
@@ -115,14 +119,18 @@ public class BlueFoundationToLine_7911 extends OpMode
             case 5:
                 delay(500);
                 break;
+//            case 6:
+//                drive20to1(-5, -5,0.6, 0.5);
+//                break;
             case 6:
-                drive20to1(-5, -5,0.6);
+                drive20to1(15, -8, 1);
+//                if (time >= 25) {
+//                    index++;
+//                }
+                delay(25);
                 break;
             case 7:
-                drive20to1(22, 0, 0.8);
-                break;
-            case 8:
-                drive20to1(30, 30, 0.9, 0.8);
+                drive20to1(30, 30, 1);
                 break;
             default:
                 allStop();

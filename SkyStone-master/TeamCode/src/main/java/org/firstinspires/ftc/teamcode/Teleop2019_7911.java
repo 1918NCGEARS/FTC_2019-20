@@ -157,11 +157,14 @@ public class Teleop2019_7911 extends OpMode
         double driveMultiplier;
         double slowMultiplier;
         double fastMultiplier;
-        double BASE_DRIVE_SPEED = 0.5;
+        double BASE_DRIVE_SPEED = 0.6;
         double elevPower;
         double armPower;
         boolean lowerLimitPressed;
         boolean upperLimitPressed;
+
+
+
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -192,13 +195,13 @@ public class Teleop2019_7911 extends OpMode
         }
 
         if (gamepad1.left_trigger > 0){
-            slowMultiplier = 0.15;
+            slowMultiplier = 0.10;
         }
         else
             slowMultiplier = 0;
 
         if (gamepad1.right_trigger > 0){
-            fastMultiplier = 0.35;
+            fastMultiplier = 0.30;
         }
         else
             fastMultiplier = 0;

@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -159,7 +160,7 @@ public class Teleop2019 extends OpMode
         double driveMultiplier;
         double slowMultiplier;
         double fastMultiplier;
-        double BASE_DRIVE_SPEED = 0.5;
+        double BASE_DRIVE_SPEED = 1;
         double elevPower;
         double armPower;
         boolean lowerLimitPressed;
@@ -195,13 +196,13 @@ public class Teleop2019 extends OpMode
         }
 
         if (gamepad1.left_trigger > 0){
-            slowMultiplier = 0.15;
+            slowMultiplier = 0;
         }
         else
             slowMultiplier = 0;
 
         if (gamepad1.right_trigger > 0){
-            fastMultiplier = 0.35;
+            fastMultiplier = 0;
         }
         else
             fastMultiplier = 0;
